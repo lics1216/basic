@@ -1,0 +1,83 @@
+题目：https://www.nowcoder.com/practice/4a052e3e1df5435880d4353eb18a91c6?tpId=82&tqId=29764&tPage=1&rp=&ru=/ta/sql&qru=/ta/sql/question-ranking
+获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary
+dept_emp 
++---------+--------+------------+------------+
+| dept_no | emp_no | from_date  | to_date    |
++---------+--------+------------+------------+
+| d004    |  10004 | 1986-12-01 | 9999-01-01 |
+| d003    |  10005 | 1989-09-12 | 9999-01-01 |
+| d002    |  10006 | 1990-08-05 | 9999-01-01 |
+| d005    |  10010 | 1996-11-24 | 2000-06-26 |
+| d006    |  10010 | 2000-06-26 | 9999-01-01 |
++---------+--------+------------+------------+
+dept_no 部门
+emp_no  员工号
+from_date 入职日期
+to_date 日期（9999-01-01 为还在职，否则已离职）
+
+salaries
++--------+--------+------------+------------+
+| emp_no | salary | from_date  | to_date    |
++--------+--------+------------+------------+
+|  10001 |  60117 | 1986-06-26 | 1987-06-26 |
+|  10001 |  62102 | 1987-06-26 | 1988-06-25 |
+|  10001 |  66074 | 1988-06-25 | 1989-06-25 |
+|  10001 |  66596 | 1989-06-25 | 1990-06-25 |
+|  10001 |  66961 | 1990-06-25 | 1991-06-25 |
+|  10001 |  71046 | 1991-06-25 | 1992-06-24 |
+|  10001 |  74333 | 1992-06-24 | 1993-06-24 |
+|  10001 |  75286 | 1993-06-24 | 1994-06-24 |
+|  10001 |  75994 | 1994-06-24 | 1995-06-24 |
+|  10001 |  76884 | 1995-06-24 | 1996-06-23 |
++--------+--------+------------+------------+
+emp_no  员工号
+salary 薪资
+from_date 工资生效日期
+to_date 日期（9999-01-01 截止到现在的工资）
+
+===============================================
+
+思路：
+求分组之后，各组某列最值对应的行信息
+
+===============================================
+
+# 方法1
+# 先连表，再通过where 筛选每条信息，筛选时可以利用该行数据
+# 下边的 where c.dept_no = a.dept_no 这种做法以前用得很少。但是这相当于 for 嵌套循环
+select a.dept_no, a.emp_no, b.salary from dept_emp as a 
+join salaries as b
+on a.emp_no=b.emp_no and 
+a.to_date='9999-01-01' and
+b.to_date='9999-01-01'
+where b.salary = (
+        select max(d.salary) from dept_emp as c join salaries as d
+        on c.emp_no=d.emp_no and 
+        c.to_date='9999-01-01' and
+        d.to_date='9999-01-01'
+        where c.dept_no = a.dept_no
+        group by  c.dept_no
+      )
+order by a.dept_no;
+
+
+
+# 方法2
+# 不分组获取表某列最值 对应，通过先排序，再 limit 1 的做法。
+# 在分组的情况下，同样思路
+select * from xx order by xx desc limit 1;
+
+#   参考 https://blog.csdn.net/shiyong1949/article/details/78482737
+select c.* from (
+    select a.dept_no, a.emp_no, b.salary from dept_emp as a 
+    join salaries as b
+    on a.emp_no=b.emp_no and 
+    a.to_date='9999-01-01' and
+    b.to_date='9999-01-01'
+    order by b.salary desc limit 10000000000
+    ) as c
+group by c.dept_no;
+
+
+
+
