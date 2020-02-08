@@ -60,14 +60,12 @@ where b.salary = (
       )
 order by a.dept_no;
 
-
-
 # 方法2
 # 不分组获取表某列最值 对应，通过先排序，再 limit 1 的做法。
 # 在分组的情况下，同样思路
 select * from xx order by xx desc limit 1;
 
-#   参考 https://blog.csdn.net/shiyong1949/article/details/78482737
+# 参考 https://blog.csdn.net/shiyong1949/article/details/78482737
 select c.* from (
     select a.dept_no, a.emp_no, b.salary from dept_emp as a 
     join salaries as b
