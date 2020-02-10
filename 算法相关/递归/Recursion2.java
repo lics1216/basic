@@ -16,7 +16,13 @@ import java.util.Set;
  *    返回结果为 ArrayList<String> 
  * 
  *  递推公式
- *  f(s) = [f(s.substring(0, i1 + 1)) 循环每个元素加上 i1, f(s.substring(0, i2 + 1)) 循环每个元素加上 i2,..... f(s.substring(0, in + 1)) 循环每个元素加上 in,]
+ *  f(s) = [
+ *  f(s.substring(0, i1 + 1)) 循环返回结果每个元素加上 s.substring(i1 + 1, s.length()), 
+ *  f(s.substring(0, i2 + 1)) 循环返回结果每个元素加上 s.substring(i2 + 1, s.length()), 
+ *  ..... 
+ *  f(s.substring(0, in + 1)) 循环返回结果每个元素加上 s.substring(in + 1, s.length()), 
+ *  ]
+ *  
  *  in 符合条件 -1< = in < s.length()-1 且满足 dict contains s.substring(in + 1, s.length())
  * 
  *  终止条件（很重要，之前写了很多错的终止条件）
