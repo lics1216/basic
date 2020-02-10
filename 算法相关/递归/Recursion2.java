@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *  题目描述
+ *  题目描述 https://www.nowcoder.com/practice/bd73f6b52fdc421d91b14f9c909f9104?tpId=46&tqId=29040&tPage=1&rp=1&ru=/ta/leetcode&qru=/ta/leetcode/question-ranking
  * 给定一个字符串s和一组单词dict，在s中添加空格将s变成一个句子，使得句子中的每一个单词都是dict中的单词 返回所有可能的结果
  * 例如：给定的字符串s *"catsanddog", dict =["cat", "cats", "and", "sand", "dog"]. * *
  * 返回的结果为["cats and dog", "cat sand dog"]. *
